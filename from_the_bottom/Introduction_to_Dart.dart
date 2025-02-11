@@ -42,8 +42,7 @@ void main() {
   var result = fibonacci(20);
   print(result);
 
-  final listFromFly =
-      flybyObjects.where((name) => name.contains('turn')).forEach(print);
+  final listFromFly = flybyObjects.where((name) => name.contains('turn')).forEach(print);
 
   final tomcraft = Spacecraft('Tomcraft', DateTime(2023, 1, 1));
   final tomSpacecraft = Spacecraft.unlaunched('ttom');
@@ -55,6 +54,12 @@ void main() {
 
   var voyager3 = Spacecraft.unlaunched('Voyager III');
   voyager3.describe();
+
+  final yourPlanet = Planet.uranus;
+
+  if (!yourPlanet.isGiant) {
+    print('Your planet is not a "giant planet".');
+  }
 }
 
 class Spacecraft {
@@ -85,3 +90,34 @@ class Spacecraft {
     }
   }
 }
+
+class Orbiter extends Spacecraft {
+  double altitude;
+
+  Orbiter(super.name, DateTime super.launchDate, this.altitude);
+}
+
+enum PlanetType { terrestrial, gas, ice }
+
+/// Enum that enumerates the different planets in our solar system
+/// and some of their properties.
+enum Planet {
+  mercury(planetType: PlanetType.terrestrial, moons: 0, hasRings: false),
+venus(planetType: PlanetType.terrestrial, moons: 0, hasRings: false),
+  earth(planetType: PlanetType.terrestrial, moons: 1, hasRings: false),
+  uranus(planetType: PlanetType.ice, moons: 27, hasRings: true),
+  neptune(planetType: PlanetType.ice, moons: 14, hasRings: true);
+
+  /// A constant generating constructor
+  const Planet({required this.planetType, required this.moons, required this.hasRings});
+
+  /// All instance variables are final
+  final PlanetType planetType;
+  final int moons;
+  final bool hasRings;
+
+  /// Enhanced enums support getters and other methods
+  bool get isGiant =>
+      planetType == PlanetType.gas || planetType == PlanetType.ice;
+}
+
