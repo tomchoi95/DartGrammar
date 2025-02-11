@@ -1,5 +1,6 @@
 // Importing core libraries
 import 'dart:math';
+import 'dart:io';
 
 // Importing libraries from external packages
 import 'package:test/test.dart';
@@ -42,7 +43,8 @@ void main() {
   var result = fibonacci(20);
   print(result);
 
-  final listFromFly = flybyObjects.where((name) => name.contains('turn')).forEach(print);
+  final listFromFly =
+      flybyObjects.where((name) => name.contains('turn')).forEach(print);
 
   final tomcraft = Spacecraft('Tomcraft', DateTime(2023, 1, 1));
   final tomSpacecraft = Spacecraft.unlaunched('ttom');
@@ -60,6 +62,33 @@ void main() {
   if (!yourPlanet.isGiant) {
     print('Your planet is not a "giant planet".');
   }
+  const oneSecond = Duration(seconds: 1);
+// ···
+  Future<void> printWithDelay(String message) async {
+    await Future.delayed(oneSecond);
+    print(message);
+  }
+
+  Future<void> createDescriptions(Iterable<String> objects) async {
+    for (final object in objects) {
+      try {
+        var file = File('$object.txt');
+        if (await file.exists()) {
+          var modified = await file.lastModified();
+          print(
+              'File for $object already exists. It was modified on $modified.');
+          continue;
+        }
+        await file.create();
+        await file.writeAsString('Start describing $object in this file.');
+      } on IOException catch (e) {
+        print('Cannot create description for $object: $e');
+      }
+    }
+  }
+
+  printWithDelay('Nothing to say');
+  createDescriptions(['one', 'two', 'three', 'four']);
 }
 
 class Spacecraft {
@@ -103,13 +132,14 @@ enum PlanetType { terrestrial, gas, ice }
 /// and some of their properties.
 enum Planet {
   mercury(planetType: PlanetType.terrestrial, moons: 0, hasRings: false),
-venus(planetType: PlanetType.terrestrial, moons: 0, hasRings: false),
+  venus(planetType: PlanetType.terrestrial, moons: 0, hasRings: false),
   earth(planetType: PlanetType.terrestrial, moons: 1, hasRings: false),
   uranus(planetType: PlanetType.ice, moons: 27, hasRings: true),
   neptune(planetType: PlanetType.ice, moons: 14, hasRings: true);
 
   /// A constant generating constructor
-  const Planet({required this.planetType, required this.moons, required this.hasRings});
+  const Planet(
+      {required this.planetType, required this.moons, required this.hasRings});
 
   /// All instance variables are final
   final PlanetType planetType;
@@ -120,4 +150,3 @@ venus(planetType: PlanetType.terrestrial, moons: 0, hasRings: false),
   bool get isGiant =>
       planetType == PlanetType.gas || planetType == PlanetType.ice;
 }
-
