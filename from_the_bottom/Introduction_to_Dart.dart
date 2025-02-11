@@ -150,3 +150,4 @@ enum Planet {
   bool get isGiant =>
       planetType == PlanetType.gas || planetType == PlanetType.ice;
 }
+
