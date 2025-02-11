@@ -1,7 +1,10 @@
 class SingleTonTest {
   static final SingleTonTest _singleTon = SingleTonTest._create();
 
-  SingleTonTest._create(); // private 생성자
+  SingleTonTest._create() {
+    // _create() 함수의 구현 부분
+    print("싱글톤 인스턴스가 생성되었습니다.");
+  }
 
   factory SingleTonTest() {
     return _singleTon;
