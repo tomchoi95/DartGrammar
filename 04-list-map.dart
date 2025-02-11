@@ -25,4 +25,12 @@ void main() {
   monthss.forEach((key, value) {
     print('$key, $value');
   });
+
+  Map<String, int> scores = {
+    'Alice': 90,
+    'Bob': 80,
+    'Charlie': 95,
+  };
+
+  
 }
