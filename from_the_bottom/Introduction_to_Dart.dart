@@ -1,3 +1,9 @@
+// Importing core libraries
+import 'dart:math';
+
+// Importing libraries from external packages
+import 'package:test/test.dart';
+
 void main() {
   print('Hello, World!');
 
@@ -35,4 +41,47 @@ void main() {
 
   var result = fibonacci(20);
   print(result);
+
+  final listFromFly =
+      flybyObjects.where((name) => name.contains('turn')).forEach(print);
+
+  final tomcraft = Spacecraft('Tomcraft', DateTime(2023, 1, 1));
+  final tomSpacecraft = Spacecraft.unlaunched('ttom');
+  tomSpacecraft.describe();
+  tomcraft.describe(); // 변수를 사용하여 경고를 제거합니다.
+
+  var voyager = Spacecraft('Voyager I', DateTime(1977, 9, 5));
+  voyager.describe();
+
+  var voyager3 = Spacecraft.unlaunched('Voyager III');
+  voyager3.describe();
+}
+
+class Spacecraft {
+  String name;
+  DateTime? launchDate;
+
+  // Read-only non-final property
+  int? get launchYear => launchDate?.year;
+
+  // Constructor, with syntactic sugar for assignment to members.
+  Spacecraft(this.name, this.launchDate) {
+    // Initialization code goes here.
+  }
+
+  // Named constructor that forwards to the default one.
+  Spacecraft.unlaunched(String name) : this(name, null);
+
+  // Method.
+  void describe() {
+    print('Spacecraft: $name');
+    // Type promotion doesn't work on getters.
+    var launchDate = this.launchDate;
+    if (launchDate != null) {
+      int years = DateTime.now().difference(launchDate).inDays ~/ 365;
+      print('Launched: $launchYear ($years years ago)');
+    } else {
+      print('Unlaunched');
+    }
+  }
 }
