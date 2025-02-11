@@ -3,4 +3,6 @@ description: A new Dart project.
 version: 1.0.0
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.12.0 <3.7.0'
+dependencies:
+  test: ^1.25.15
